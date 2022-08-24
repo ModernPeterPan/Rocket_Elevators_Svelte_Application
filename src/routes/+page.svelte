@@ -1,5 +1,13 @@
 <script>
 	import Counter from '$lib/Counter.svelte';
+
+	function openWallet() {
+		let account;
+		ethereum.request({method: 'eth_requestAccounts'}).then(accounts => {
+			account = accounts[0];
+			con
+		})
+	}
 </script>
 
 <svelte:head>
@@ -8,22 +16,16 @@
 </svelte:head>
 
 <section>
-	<h1>
-		<span class="welcome">
-			<picture>
-				<source srcset="svelte-welcome.webp" type="image/webp" />
-				<img src="svelte-welcome.png" alt="Welcome" />
-			</picture>
-		</span>
+	<div class="container">
+		<div class="column center">
+			<button on:click={openWallet} class="cta">Don't wait for Mon(k)ey to start</button>
+		</div>
+		<div class="column">
+			<img src="src\images\nft-ape.jpg" alt="" />
 
-		to your new<br />SvelteKit app
-	</h1>
-
-	<h2>
-		try editing <strong>src/routes/index.svelte</strong>
-	</h2>
-
-	<Counter />
+			<h2>Ready to make some easy mon(k)ey $</h2>
+		</div>
+	</div>
 </section>
 
 <style>
@@ -33,6 +35,31 @@
 		justify-content: center;
 		align-items: center;
 		flex: 1;
+	}
+
+	.container {
+		position: relative;
+		display: flex;
+		flex-direction: row;
+		text-align: center;
+	}
+
+	.column {
+		width: 50%;
+	}
+
+	.container img {
+		width: 100%;
+	}
+
+	.cta {
+		padding: 15px 30px;
+	}
+
+	.center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
 	h1 {
