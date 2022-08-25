@@ -1,12 +1,37 @@
 <script>
-	import Counter from '$lib/Counter.svelte';
+	import {
+		defaultEvmStores,
+		web3,
+		selectedAccount,
+		connected,
+		chainId,
+		chainData
+	} from 'svelte-web3';
+	import { writable, derived, get } from 'svelte/store';
+	import { onMount } from 'svelte';
+	const enableBrowser = () => defaultEvmStores.setProvider();
+	let checkAccount = $selectedAccount || '0x0000000000000000000000000000000000000000';
+	$: balance = $connected ? $web3.eth.getBalance(checkAccount) : '';
 
-	function openWallet() {
-		let account;
-		ethereum.request({method: 'eth_requestAccounts'}).then(accounts => {
-			account = accounts[0];
-			con
-		})
+	// -------------------------------eligibility API------------------------
+	let eligibility = true;
+
+	onMount(async () => {
+		await fetch(`https://express-api.codeboxxtest.xyz/NFT/gift/${checkAccount}`)
+			.then((response) => response.json())
+			.then((data) => {
+				eligibility = data;
+			})
+			.catch((error) => {
+				console.log('error with gift eligibility');
+				// return [];
+			});
+	});
+
+	function test() {
+		console.log(checkAccount);
+		console.log($selectedAccount);
+		console.log(eligibility);
 	}
 </script>
 
@@ -18,13 +43,17 @@
 <section>
 	<div class="container">
 		<div class="column center">
-			<button on:click={openWallet} class="cta">Don't wait for Mon(k)ey to start</button>
+			<button on:click={enableBrowser} class="cta">Don't wait for Mon(k)ey to start</button>
+			<button on:click={test} class="cta">test here</button>
 		</div>
 		<div class="column">
 			<img src="src\images\nft-ape.jpg" alt="" />
 
 			<h2>Ready to make some easy mon(k)ey $</h2>
 		</div>
+		<p>
+			Your account: {$connected || 'not defined'}
+		</p>
 	</div>
 </section>
 
