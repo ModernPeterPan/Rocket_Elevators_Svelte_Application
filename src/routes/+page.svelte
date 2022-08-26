@@ -9,15 +9,27 @@
 	} from 'svelte-web3';
 	import { writable, derived, get } from 'svelte/store';
 	import { onMount } from 'svelte';
+	import { redirect } from '@sveltejs/kit';
 	const enableBrowser = () => defaultEvmStores.setProvider();
-	let checkAccount = $selectedAccount || '0x0000000000000000000000000000000000000000';
-	$: balance = $connected ? $web3.eth.getBalance(checkAccount) : '';
+	let connectedUser = '0xca782e1f86730b536781a69e93885d1e49c622c1';
+	
+	$: balance = $connected ? $web3.eth.getBalance(connectedUser) : '';
 
-	// -------------------------------eligibility API------------------------
-	let eligibility = true;
 
 	onMount(async () => {
-		await fetch(`https://express-api.codeboxxtest.xyz/NFT/gift/${checkAccount}`)
+        await defaultEvmStores.setProvider()})
+	// -------------------------------eligibility API------------------------
+	let eligibility = true;
+	
+
+	function redirectMintPage() {
+		window.location.replace('/about');
+		console.log(connectedUser);
+		console.log($selectedAccount);
+	}
+
+	onMount(async () => {
+		await fetch(`https://express-api.codeboxxtest.xyz/NFT/gift/${connectedUser}`)
 			.then((response) => response.json())
 			.then((data) => {
 				eligibility = data;
@@ -29,9 +41,7 @@
 	});
 
 	function test() {
-		console.log(checkAccount);
 		console.log($selectedAccount);
-		console.log(eligibility);
 	}
 </script>
 
@@ -43,7 +53,9 @@
 <section>
 	<div class="container">
 		<div class="column center">
-			<button on:click={enableBrowser} class="cta">Don't wait for Mon(k)ey to start</button>
+			<button on:click={enableBrowser} on:click={redirectMintPage} class="cta"
+				>Don't wait for your Mon(k)ey come see the NFTs!</button
+			>
 			<button on:click={test} class="cta">test here</button>
 		</div>
 		<div class="column">
@@ -52,7 +64,7 @@
 			<h2>Ready to make some easy mon(k)ey $</h2>
 		</div>
 		<p>
-			Your account: {$connected || 'not defined'}
+			Connected: {$connected || 'not defined'}
 		</p>
 	</div>
 </section>
