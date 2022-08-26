@@ -170,7 +170,6 @@
 			<img class="img-collect" src="src\images\boredapeyatch.jpg" alt="" />
 			<p class="img-collect-text">"The higher mon(k)ey climb, the more you see of its behind."</p>
 			<p class="quotees">Albert Einstein, 2022 <br /> <em>(while minting Mon(k)ey)</em></p>
-			<button>Mint 'Em</button>
 		</div>
 		<div class="column">
 			<img class="img-collect" src="src\images\RS-BoardApe_Lead_5.webp" alt="" />
